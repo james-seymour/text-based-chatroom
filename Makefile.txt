@@ -1,0 +1,21 @@
+CC=gcc
+CFLAGS= -Wall -pedantic --std=gnu99 -g -pthread
+
+.PHONY: all clean
+.DEFAULT_GOAL = all
+
+all: client server cleanobj
+
+
+client: client.o sharedutil.o
+	$(CC) $(CFLAGS) $^ -o $@
+
+server: server.o sharedutil.o serverutil.o
+	$(CC) $(CFLAGS) $^ -o $@
+
+client.o: client.c client.h sharedutil.c sharedutil.h
+
+server.o: server.c server.h sharedutil.c sharedutil.h serverutil.c serverutil.h
+
+cleanobj:
+	rm -f *.o
